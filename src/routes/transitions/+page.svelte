@@ -16,16 +16,18 @@
 <Animate>
 	<div class="lines">
 		{#each lines as line, index}
-			<span
-				class="line"
-				in:fly={{
-					y: 40,
-					delay: 300 * index,
-					easing: backOut
-				}}
-			>
-				{line}
-			</span>
+			<div class="overflow">
+				<span
+					class="line"
+					in:fly={{
+						y: 100,
+						delay: 300 * index,
+						easing: backOut
+					}}
+				>
+					{line}
+				</span>
+			</div>
 		{/each}
 	</div>
 </Animate>
@@ -38,9 +40,15 @@
 		text-align: center;
 	}
 
+	.overflow {
+		display: inline-block;
+		overflow: hidden;
+		vertical-align: bottom;
+	}
+
 	.line {
 		display: inline-block;
-		padding: 0.2rem;
+		margin: 0.2rem;
 		text-transform: uppercase;
 		text-shadow: 2px 0 10px hsl(0 0% 0% / 20%);
 	}
