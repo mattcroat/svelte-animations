@@ -1,76 +1,41 @@
 <script lang="ts">
-	import { gsap } from 'gsap'
-	import { Flip } from 'gsap/dist/Flip'
+	import { fly } from 'svelte/transition'
+	import { backOut } from 'svelte/easing'
 
-	gsap.registerPlugin(Flip)
+	import Animate from '$lib/animate.svelte'
 
-	let boxes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
-	let container = 1
-
-	async function shuffle() {
-		const state = Flip.getState('.box')
-
-		boxes = gsap.utils.shuffle(boxes)
-		container = container === 1 ? 2 : 1
-
-		requestAnimationFrame(() => {
-			Flip.from(state, {
-				targets: '.box',
-				duration: 1,
-				ease: 'power1.inOut',
-				stagger: 0.2,
-				spin: true
-			})
-		})
-	}
+	const lines = ['you wont', '', 'believe', '', 'these discounts.']
 </script>
 
-<div class="container-1">
-	{#if container === 1}
-		{#each boxes as box (box)}
-			<div class="box" data-flip-id={box.id}>
-				{box.id}
-			</div>
+<Animate>
+	<div class="lines">
+		{#each lines as line, index}
+			<span
+				class="line"
+				in:fly={{
+					y: 40,
+					delay: 300 * index,
+					easing: backOut
+				}}
+			>
+				{line}
+			</span>
 		{/each}
-	{/if}
-</div>
-
-<div class="container-2">
-	{#if container === 2}
-		{#each boxes as box (box)}
-			<div class="box" data-flip-id={box.id}>
-				{box.id}
-			</div>
-		{/each}
-	{/if}
-</div>
-
-<button on:click={shuffle}>Shuffle</button>
+	</div>
+</Animate>
 
 <style>
-	.box {
-		width: 140px;
-		display: grid;
-		place-content: center;
+	.lines {
+		max-width: 800px;
 		font-size: 3rem;
-		font-weight: 700;
-		color: black;
-		background-color: white;
-		border-radius: 1rem;
+		font-weight: 900;
+		text-align: center;
 	}
 
-	.container-1,
-	.container-2 {
-		min-height: 140px;
-		display: flex;
-		gap: 1rem;
-		margin: 2rem;
-		padding: 1rem;
-		border: 2px solid white;
-		border-radius: 1rem;
-	}
-
-	button {
-		margin: 2rem;
+	.line {
+		display: inline-block;
+		padding: 0.2rem;
+		text-transform: uppercase;
+		text-shadow: 2px 0 10px hsl(0 0% 0% / 20%);
 	}
 </style>
