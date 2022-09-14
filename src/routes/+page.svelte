@@ -1,188 +1,76 @@
 <script lang="ts">
-	import { flip } from 'svelte/animate'
-	import { crossfade } from 'svelte/transition'
-	import { quintOut } from 'svelte/easing'
+	import { gsap } from 'gsap'
+	import { Flip } from 'gsap/dist/Flip'
 
-	const [send, receive] = crossfade({
-		easing: quintOut,
-		fallback(node) {
-			const style = getComputedStyle(node)
-			const transform = style.transform === 'none' ? '' : style.transform
+	gsap.registerPlugin(Flip)
 
-			return {
-				duration: 600,
-				easing: quintOut,
-				css: (time) => `
-					transform: ${transform} scale(${time});
-					opacity: ${time}
-				`
-			}
-		}
-	})
+	let boxes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
+	let container = 1
 
-	let cards = [
-		{ id: 1, selected: false },
-		{ id: 2, selected: false },
-		{ id: 3, selected: false },
-		{ id: 4, selected: false }
-	]
+	async function shuffle() {
+		const state = Flip.getState('.box')
 
-	$: stack = cards.filter((card) => card.selected)
-	$: hand = cards.filter((card) => !card.selected)
+		boxes = gsap.utils.shuffle(boxes)
+		container = container === 1 ? 2 : 1
 
-	function dealCard() {
-		cards = [...cards, { id: cards.length + 1, selected: false }]
-	}
-
-	function returnToStack(cardId: number) {
-		const index = cards.findIndex((card) => card.id === cardId)
-		cards[index].selected = true
-	}
-
-	function returnToHand(cardId: number) {
-		const index = cards.findIndex((card) => card.id === cardId)
-		cards[index].selected = false
+		requestAnimationFrame(() => {
+			Flip.from(state, {
+				targets: '.box',
+				duration: 1,
+				ease: 'power1.inOut',
+				stagger: 0.2,
+				spin: true
+			})
+		})
 	}
 </script>
 
-<div class="cards">
-	<div class="deck">
-		{#each stack as card, index (card)}
-			<div
-				class="card"
-				on:click={() => returnToHand(card.id)}
-				animate:flip
-				in:send={{ key: card.id }}
-				out:receive={{ key: card.id }}
-				style:--index={index}
-			>
-				{card.id}
+<div class="container-1">
+	{#if container === 1}
+		{#each boxes as box (box)}
+			<div class="box" data-flip-id={box.id}>
+				{box.id}
 			</div>
 		{/each}
-	</div>
+	{/if}
+</div>
 
-	<div class="hand" style:--cards={hand.length}>
-		{#each hand as card, index (card)}
-			<div
-				class="card"
-				on:click={() => returnToStack(card.id)}
-				animate:flip
-				in:send={{ key: card.id }}
-				out:receive={{ key: card.id }}
-				style:--index={index}
-			>
-				{card.id}
+<div class="container-2">
+	{#if container === 2}
+		{#each boxes as box (box)}
+			<div class="box" data-flip-id={box.id}>
+				{box.id}
 			</div>
 		{/each}
-	</div>
+	{/if}
 </div>
 
-<div class="deal">
-	<button on:click={dealCard}>Deal</button>
-</div>
+<button on:click={shuffle}>Shuffle</button>
 
-<style lang="scss">
-	.cards {
-		height: 100vh;
-		display: grid;
-		grid-template-rows: repeat(2, 1fr);
-	}
-
-	.deck {
-		--angle: 10deg;
-		--index: 0;
-
+<style>
+	.box {
+		width: 140px;
 		display: grid;
 		place-content: center;
-		user-select: none;
-
-		> * {
-			grid-area: 1 / -1;
-		}
-
-		&::before {
-			content: '';
-			width: 200px;
-			height: 280px;
-			position: absolute;
-			left: 50%;
-			transform: translate(-50%, 25%);
-			background-color: hsl(220 20% 20%);
-			border: 6px dashed hsl(220 20% 40%);
-			border-radius: 1rem;
-		}
-
-		.card {
-			width: 200px;
-			height: 280px;
-			display: grid;
-			place-content: center;
-			transform: rotate(calc(var(--angle) * var(--index)));
-			font-weight: 700;
-			font-size: 8rem;
-			color: hsl(220 20% 20%);
-			background-color: hsl(220 20% 98%);
-			border-radius: 1rem;
-			box-shadow: 0 0 20px hsl(0 0% 0% / 20%);
-			cursor: pointer;
-		}
+		font-size: 3rem;
+		font-weight: 700;
+		color: black;
+		background-color: white;
+		border-radius: 1rem;
 	}
 
-	.hand {
-		--angle: 40deg;
-		--cards: 0;
-		--index: 0;
-
-		display: grid;
-		place-content: center;
-		margin: 0 auto;
-		user-select: none;
-
-		> * {
-			grid-area: 1 / -1;
-		}
-
-		&:hover {
-			--angle: 60deg;
-		}
-
-		.card {
-			width: 200px;
-			height: 280px;
-			display: grid;
-			place-content: center;
-			transform-origin: center 180%;
-			transform: rotate(
-				calc(
-					calc(var(--angle) * -1) / 2 + calc(var(--angle) / var(--cards)) *
-						var(--index)
-				)
-			);
-			font-weight: 700;
-			font-size: 8rem;
-			color: hsl(220 20% 20%);
-			background-color: hsl(220 20% 98%);
-			border-radius: 1rem;
-			box-shadow: 0 0 20px hsl(0 0% 0% / 20%);
-			transition: all 300ms cubic-bezier(0.6, 0, 0.2, 1);
-			cursor: pointer;
-		}
-
-		.card:hover {
-			scale: 1.04;
-			z-index: 100;
-		}
+	.container-1,
+	.container-2 {
+		min-height: 140px;
+		display: flex;
+		gap: 1rem;
+		margin: 2rem;
+		padding: 1rem;
+		border: 2px solid white;
+		border-radius: 1rem;
 	}
 
-	.deal {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-
-		button {
-			font-size: 1.2rem;
-			font-weight: 700;
-		}
+	button {
+		margin: 2rem;
 	}
 </style>
