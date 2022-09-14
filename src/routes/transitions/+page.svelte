@@ -5,11 +5,12 @@
 	import Animate from '$lib/animate.svelte'
 
 	const lines = [
-		'you wont',
+		'the magical',
 		'',
-		'believe',
+		'disappearing',
 		'',
-		'these discounts.'
+		'UI framework.',
+		'🪄'
 	]
 </script>
 
