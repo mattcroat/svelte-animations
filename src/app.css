@@ -12,7 +12,14 @@
 	background-color: hsl(220 20% 14%);
 }
 
+html,
 body {
+	height: 100%;
+}
+
+body {
+	display: grid;
+	place-content: center;
 	font-family: 'Poppins', sans-serif;
 	color: hsl(220 20% 98%);
 	background-image: linear-gradient(
