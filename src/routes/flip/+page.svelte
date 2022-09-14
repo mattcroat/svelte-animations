@@ -1,68 +1,76 @@
 <script lang="ts">
-	import { afterUpdate, beforeUpdate } from 'svelte'
 	import { gsap } from 'gsap'
 	import { Flip } from 'gsap/dist/Flip'
 
 	gsap.registerPlugin(Flip)
 
-	let items = [1, 2, 3, 4]
-	let state: Flip.FlipState | null = null
+	let boxes = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }]
+	let container = 1
 
-	function removeItem(itemToRemove: number) {
-		items = items.filter((item) => item !== itemToRemove)
-	}
+	async function shuffle() {
+		const state = Flip.getState('.box')
 
-	function reset() {
-		items = [1, 2, 3, 4]
-	}
+		boxes = gsap.utils.shuffle(boxes)
+		container = container === 1 ? 2 : 1
 
-	function reverse() {
-		items = [...items.reverse()]
-	}
-
-	beforeUpdate(() => {
-		state = Flip.getState('.item')
-	})
-
-	afterUpdate(() => {
-		if (!state) return
-
-		Flip.from(state, {
-			duration: 1,
-			ease: 'power1.inOut'
+		requestAnimationFrame(() => {
+			Flip.from(state, {
+				targets: '.box',
+				duration: 1,
+				ease: 'power1.inOut',
+				stagger: 0.2,
+				spin: true
+			})
 		})
-	})
+	}
 </script>
 
-<ul>
-	{#each items as item (item)}
-		<li class="item" on:click={() => removeItem(item)}>{item}</li>
-	{/each}
-</ul>
-
-<div class="actions">
-	<button on:click={reset}>Reset</button>
-	<button on:click={reverse}>Reverse</button>
+<div class="container-1">
+	{#if container === 1}
+		{#each boxes as box (box)}
+			<div class="box" data-flip-id={box.id}>
+				{box.id}
+			</div>
+		{/each}
+	{/if}
 </div>
 
-<style>
-	ul {
-		display: flex;
-		gap: 1rem;
-		padding: 2rem;
-		list-style: none;
-	}
+<div class="container-2">
+	{#if container === 2}
+		{#each boxes as box (box)}
+			<div class="box" data-flip-id={box.id}>
+				{box.id}
+			</div>
+		{/each}
+	{/if}
+</div>
 
-	li {
+<button on:click={shuffle}>Shuffle</button>
+
+<style>
+	.box {
+		width: 140px;
+		display: grid;
+		place-content: center;
+		font-size: 3rem;
+		font-weight: 700;
 		color: black;
-		background: white;
-		padding: 1rem 2rem;
+		background-color: white;
 		border-radius: 1rem;
 	}
 
-	.actions {
+	.container-1,
+	.container-2 {
+		min-height: 140px;
 		display: flex;
-		gap: 0.4rem;
-		padding: 0 2rem;
+		gap: 1rem;
+		margin: 2rem;
+		padding: 1rem;
+		border: 2px solid white;
+		border-radius: 1rem;
+	}
+
+	button {
+		margin: 2rem;
 	}
 </style>
