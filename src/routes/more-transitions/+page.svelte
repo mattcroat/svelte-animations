@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { fade, blur, fly, slide, scale, draw } from 'svelte/transition'
+	import {
+		fade,
+		blur,
+		fly,
+		slide,
+		scale,
+		draw
+	} from 'svelte/transition'
 
 	import Animate from '$lib/animate.svelte'
 </script>
