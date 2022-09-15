@@ -1,88 +1,100 @@
 <script lang="ts">
-	import { flip } from 'svelte/animate'
-	import { crossfade } from 'svelte/transition'
-	import { quintOut } from 'svelte/easing'
+	import { gsap } from 'gsap'
+	import Flip from 'gsap/dist/Flip'
 
-	const [send, receive] = crossfade({
-		easing: quintOut,
-		fallback(node) {
-			const style = getComputedStyle(node)
-			const transform = style.transform === 'none' ? '' : style.transform
+	gsap.registerPlugin(Flip)
 
-			return {
-				duration: 600,
-				easing: quintOut,
-				css: (time) => `
-					transform: ${transform} scale(${time});
-					opacity: ${time}
-				`
-			}
-		}
-	})
+	type Card = {
+		id: number
+		content: string
+		selected: boolean
+	}
 
 	let cards = [
-		{ id: 1, selected: false },
-		{ id: 2, selected: false },
-		{ id: 3, selected: false },
-		{ id: 4, selected: false }
+		{ id: 1, content: '🎩', selected: false },
+		{ id: 2, content: '🪄', selected: false },
+		{ id: 3, content: '🐇', selected: false },
+		{ id: 4, content: '🔥', selected: false }
 	]
 
 	$: stack = cards.filter((card) => card.selected)
 	$: hand = cards.filter((card) => !card.selected)
 
+	function flip() {
+		const state = Flip.getState('.card')
+
+		// you could also use tick
+		requestAnimationFrame(() => {
+			Flip.from(state, {
+				targets: '.card',
+				duration: 1
+			})
+		})
+	}
+
 	function dealCard() {
-		cards = [...cards, { id: cards.length + 1, selected: false }]
+		const emojis = ['🎩', '🪄', '🐇', '🔥']
+		const index = Math.floor(Math.random() * emojis.length)
+
+		cards = [
+			...cards,
+			{
+				id: cards.length + 1,
+				content: emojis[index],
+				selected: false
+			}
+		]
 	}
 
-	function returnToStack(cardId: number) {
-		const index = cards.findIndex((card) => card.id === cardId)
+	function returnToStack(cardFromHand: Card) {
+		const index = cards.findIndex(
+			(card) => card === cardFromHand
+		)
 		cards[index].selected = true
+		flip()
 	}
 
-	function returnToHand(cardId: number) {
-		const index = cards.findIndex((card) => card.id === cardId)
+	function returnToHand(cardFromDeck: Card) {
+		const index = cards.findIndex(
+			(card) => card === cardFromDeck
+		)
 		cards[index].selected = false
+		flip()
 	}
 </script>
 
-<div class="cards">
+<svelte:window on:mousewheel={dealCard} />
+
+<div class="table">
 	<div class="deck">
-		{#each stack as card, index (card)}
+		{#each stack as card, index}
 			<div
 				class="card"
-				on:click={() => returnToHand(card.id)}
-				animate:flip
-				in:send={{ key: card.id }}
-				out:receive={{ key: card.id }}
+				on:click={() => returnToHand(card)}
+				data-flip-id={card.id}
 				style:--index={index}
 			>
-				{card.id}
+				{card.content}
 			</div>
 		{/each}
 	</div>
 
 	<div class="hand" style:--cards={hand.length}>
-		{#each hand as card, index (card)}
+		{#each hand as card, index}
 			<div
 				class="card"
-				on:click={() => returnToStack(card.id)}
-				animate:flip
-				in:send={{ key: card.id }}
-				out:receive={{ key: card.id }}
+				on:click={() => returnToStack(card)}
+				data-flip-id={card.id}
 				style:--index={index}
 			>
-				{card.id}
+				{card.content}
 			</div>
 		{/each}
 	</div>
 </div>
 
-<div class="deal">
-	<button on:click={dealCard}>Deal</button>
-</div>
-
 <style lang="scss">
-	.cards {
+	.table {
 		height: 100vh;
 		display: grid;
 		grid-template-rows: repeat(2, 1fr);
@@ -102,11 +114,11 @@
 
 		&::before {
 			content: '';
-			width: 200px;
-			height: 280px;
+			width: 220px;
+			height: 300px;
 			position: absolute;
 			left: 50%;
-			transform: translate(-50%, 25%);
+			transform: translate(-50%, 30%);
 			background-color: hsl(220 20% 20%);
 			border: 6px dashed hsl(220 20% 40%);
 			border-radius: 1rem;
@@ -118,7 +130,6 @@
 			display: grid;
 			place-content: center;
 			transform: rotate(calc(var(--angle) * var(--index)));
-			font-weight: 700;
 			font-size: 8rem;
 			color: hsl(220 20% 20%);
 			background-color: hsl(220 20% 98%);
@@ -154,35 +165,22 @@
 			transform-origin: center 180%;
 			transform: rotate(
 				calc(
-					calc(var(--angle) * -1) / 2 + calc(var(--angle) / var(--cards)) *
-						var(--index)
+					calc(var(--angle) * -1) / 2 +
+						calc(var(--angle) / var(--cards)) * var(--index)
 				)
 			);
-			font-weight: 700;
 			font-size: 8rem;
 			color: hsl(220 20% 20%);
 			background-color: hsl(220 20% 98%);
 			border-radius: 1rem;
 			box-shadow: 0 0 20px hsl(0 0% 0% / 20%);
-			transition: all 300ms cubic-bezier(0.6, 0, 0.2, 1);
+			// transition: all 300ms cubic-bezier(0.6, 0, 0.2, 1);
 			cursor: pointer;
-		}
 
-		.card:hover {
-			scale: 1.04;
-			z-index: 100;
-		}
-	}
-
-	.deal {
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-
-		button {
-			font-size: 1.2rem;
-			font-weight: 700;
+			&:hover {
+				scale: 1.04;
+				z-index: 100;
+			}
 		}
 	}
 </style>
