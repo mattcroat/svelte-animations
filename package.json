@@ -26,6 +26,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"gsap": "^3.11.1"
+		"gsap": "^3.11.1",
+		"just-shuffle": "^4.1.1"
 	}
 }

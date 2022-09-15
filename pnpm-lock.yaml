@@ -4,6 +4,7 @@ specifiers:
   '@sveltejs/adapter-auto': 1.0.0-next.73
   '@sveltejs/kit': 1.0.0-next.481
   gsap: ^3.11.1
+  just-shuffle: ^4.1.1
   prettier: ^2.7.1
   prettier-plugin-svelte: ^2.7.0
   sass: ^1.54.9
@@ -16,6 +17,7 @@ specifiers:
 
 dependencies:
   gsap: 3.11.1
+  just-shuffle: 4.1.1
 
 devDependencies:
   '@sveltejs/adapter-auto': 1.0.0-next.73
@@ -820,6 +822,10 @@ packages:
     resolution: {integrity: sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==}
     engines: {node: '>=0.12.0'}
     dev: true
+
+  /just-shuffle/4.1.1:
+    resolution: {integrity: sha512-UKnk2ihUNE+bXjidVZSpcgtbfR1L9cricnw4VnIJaU9uJj4V8UAUqJC3JGTR4kwbB3Ym/F/zrXXT3IJ3QeGfUg==}
+    dev: false
 
   /kleur/4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
