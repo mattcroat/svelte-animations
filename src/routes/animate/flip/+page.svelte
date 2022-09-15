@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { flip } from 'svelte/animate'
 	import { crossfade } from 'svelte/transition'
 	import { quintOut } from 'svelte/easing'
 	import shuffle from 'just-shuffle'
@@ -34,6 +35,11 @@
 	function remove(id: string) {
 		emojis = emojis.filter((emoji) => emoji !== id)
 	}
+
+	function reset() {
+		emojis = ['🎩', '🪄', '🐇', '🔥', '🦊']
+		container = 1
+	}
 </script>
 
 <div class="container">
@@ -41,6 +47,8 @@
 		{#each emojis as emoji (emoji)}
 			<div
 				class="emoji"
+				on:click={() => remove(emoji)}
+				animate:flip
 				in:receive={{ key: emoji }}
 				out:send={{ key: emoji }}
 			>
@@ -55,6 +63,8 @@
 		{#each emojis as emoji (emoji)}
 			<div
 				class="emoji"
+				on:click={() => remove(emoji)}
+				animate:flip
 				in:receive={{ key: emoji }}
 				out:send={{ key: emoji }}
 			>
@@ -66,6 +76,7 @@
 
 <div class="actions">
 	<button on:click={randomize}>🎲</button>
+	<button on:click={reset}>♻️</button>
 </div>
 
 <style lang="scss">
