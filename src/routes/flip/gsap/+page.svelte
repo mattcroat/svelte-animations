@@ -10,11 +10,11 @@
 		selected: boolean
 	}
 
-	let cards = [
+	let cards: Card[] = [
 		{ id: 1, content: '🎩', selected: false },
 		{ id: 2, content: '🪄', selected: false },
 		{ id: 3, content: '🐇', selected: false },
-		{ id: 4, content: '🔥', selected: false }
+		{ id: 4, content: '🌹', selected: false }
 	]
 
 	$: stack = cards.filter((card) => card.selected)
@@ -27,13 +27,13 @@
 		requestAnimationFrame(() => {
 			Flip.from(state, {
 				targets: '.card',
-				duration: 1
+				ease: 'power1.inOut'
 			})
 		})
 	}
 
 	function dealCard() {
-		const emojis = ['🎩', '🪄', '🐇', '🔥']
+		const emojis = ['🎩', '🪄', '🐇', '🌹']
 		const index = Math.floor(Math.random() * emojis.length)
 
 		cards = [
@@ -67,12 +67,12 @@
 
 <div class="table">
 	<div class="deck">
-		{#each stack as card, index}
+		{#each stack as card, i}
 			<div
 				class="card"
 				on:click={() => returnToHand(card)}
 				data-flip-id={card.id}
-				style:--index={index}
+				style:--index={i}
 			>
 				{card.content}
 			</div>
@@ -80,107 +80,88 @@
 	</div>
 
 	<div class="hand" style:--cards={hand.length}>
-		{#each hand as card, index}
-			<div
-				class="card"
-				on:click={() => returnToStack(card)}
-				data-flip-id={card.id}
-				style:--index={index}
-			>
-				{card.content}
+		{#each hand as card, i}
+			<div class="peek">
+				<div
+					class="card"
+					on:click={() => returnToStack(card)}
+					data-flip-id={card.id}
+					style:--index={i}
+				>
+					{card.content}
+				</div>
 			</div>
 		{/each}
 	</div>
 </div>
 
 <style lang="scss">
-	.table {
-		height: 100vh;
-		display: grid;
-		grid-template-rows: repeat(2, 1fr);
-	}
-
 	.deck {
-		--angle: 10deg;
-		--index: 0;
-
+		width: 220px;
+		height: 300px;
 		display: grid;
-		place-content: center;
-		user-select: none;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		padding: 0.3rem;
+		transform: translate(-50%, -80%);
+		background-color: hsl(220 20% 20%);
+		border: 6px dashed hsl(220 20% 40%);
+		border-radius: 1rem;
 
 		> * {
 			grid-area: 1 / -1;
 		}
 
-		&::before {
-			content: '';
-			width: 220px;
-			height: 300px;
-			position: absolute;
-			left: 50%;
-			transform: translate(-50%, 30%);
-			background-color: hsl(220 20% 20%);
-			border: 6px dashed hsl(220 20% 40%);
-			border-radius: 1rem;
-		}
-
 		.card {
-			width: 200px;
-			height: 280px;
-			display: grid;
-			place-content: center;
-			transform: rotate(calc(var(--angle) * var(--index)));
-			font-size: 8rem;
-			color: hsl(220 20% 20%);
-			background-color: hsl(220 20% 98%);
-			border-radius: 1rem;
-			box-shadow: 0 0 20px hsl(0 0% 0% / 20%);
-			cursor: pointer;
+			margin: 0;
+			transform: rotate(calc(var(--index) * -2deg));
 		}
 	}
 
 	.hand {
-		--angle: 40deg;
-		--cards: 0;
-		--index: 0;
+		--angle: 120;
 
+		position: absolute;
+		bottom: -20px;
+		display: flex;
+		justify-content: center;
+	}
+
+	.card {
+		width: 200px;
+		height: 280px;
+		position: relative;
 		display: grid;
 		place-content: center;
-		margin: 0 auto;
+		margin-left: -160px;
+		z-index: calc(var(--cards) - var(--index));
+		font-size: 4rem;
+		color: hsl(220 20% 20%);
+		background-color: hsl(220 20% 98%);
+		box-shadow: 0 0 20px hsl(0 0% 0% / 20%);
+		border-radius: 1rem;
 		user-select: none;
 
-		> * {
-			grid-area: 1 / -1;
-		}
+		--first: calc(
+			var(--angle) / var(--cards) * (var(--index) + 1)
+		);
+		--second: calc(
+			var(--angle) / 2 + (var(--angle) / var(--cards)) / 2
+		);
+		--rotation: calc(var(--first) - var(--second));
 
-		&:hover {
-			--angle: 60deg;
-		}
+		transform: rotate(calc(var(--rotation) * 1deg));
+		transform-origin: bottom center;
+	}
 
-		.card {
-			width: 200px;
-			height: 280px;
-			display: grid;
-			place-content: center;
-			transform-origin: center 180%;
-			transform: rotate(
-				calc(
-					calc(var(--angle) * -1) / 2 +
-						calc(var(--angle) / var(--cards)) * var(--index)
-				)
-			);
-			font-size: 8rem;
-			color: hsl(220 20% 20%);
-			background-color: hsl(220 20% 98%);
-			border-radius: 1rem;
-			box-shadow: 0 0 20px hsl(0 0% 0% / 20%);
-			// transition: all 300ms cubic-bezier(0.6, 0, 0.2, 1);
-			cursor: pointer;
+	.peek {
+		transition: all 0.3s cubic-bezier(0, 0.44, 0.6, 1);
+	}
 
-			&:hover {
-				scale: 1.04;
-				z-index: 100;
-			}
-		}
+	.peek:hover {
+		z-index: 100;
+		transform: translateY(-20px) scale(1.04);
+		cursor: pointer;
 	}
 </style>
