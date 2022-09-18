@@ -153,6 +153,10 @@
 
 		transform: rotate(calc(var(--rotation) * 1deg));
 		transform-origin: bottom center;
+
+		&:hover {
+			cursor: pointer;
+		}
 	}
 
 	.peek {
@@ -162,6 +166,5 @@
 	.peek:hover {
 		z-index: 100;
 		transform: translateY(-20px) scale(1.04);
-		cursor: pointer;
 	}
 </style>
