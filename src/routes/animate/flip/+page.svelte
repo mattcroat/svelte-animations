@@ -24,7 +24,7 @@
 		}
 	})
 
-	let emojis = ['🎩', '🪄', '🐇', '🔥', '🦊']
+	let emojis = ['🎩', '🪄', '🐇', '🌹']
 	let container = 1
 
 	async function randomize() {
@@ -37,7 +37,7 @@
 	}
 
 	function reset() {
-		emojis = ['🎩', '🪄', '🐇', '🔥', '🦊']
+		emojis = ['🎩', '🪄', '🐇', '🌹']
 		container = 1
 	}
 </script>

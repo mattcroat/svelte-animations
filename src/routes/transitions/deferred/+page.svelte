@@ -23,7 +23,7 @@
 		}
 	})
 
-	let emojis = ['🎩', '🪄', '🐇', '🔥', '🦊']
+	let emojis = ['🎩', '🪄', '🐇', '🌹']
 	let container = 1
 
 	async function randomize() {
