@@ -1,13 +1,24 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 
-	const pages = ['/']
+	const pages = [
+		'/',
+		'/motion/tweened',
+		'/motion/spring',
+		'/transitions/component',
+		'/transitions/stagger',
+		'/transitions/examples',
+		'/transitions/custom/css',
+		'/transitions/custom/js',
+		'/animate/flip',
+		'/flip/svelte',
+		'/flip/gsap'
+	]
 	let currentPage = 0
 
 	function handleKeydown(event: KeyboardEvent) {
 		if (event.key === 'ArrowRight') {
 			if (currentPage === pages.length - 1) return
-			console.log({ currentPage, pages: pages.length })
 			currentPage += 1
 			const nextPage = currentPage
 			goto(pages[nextPage])
