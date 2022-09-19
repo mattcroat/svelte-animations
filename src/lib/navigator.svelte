@@ -12,7 +12,8 @@
 		'/motion/spring',
 		'/animate/flip',
 		'/flip/svelte',
-		'/flip/gsap'
+		'/flip/gsap',
+		'/transitions/page/first'
 	]
 	let currentPage = 0
 

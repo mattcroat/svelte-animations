@@ -40,6 +40,15 @@ h1 {
 	font-weight: 900;
 }
 
+a {
+	color: white;
+	text-decoration: none;
+}
+
+a:hover {
+	color: aquamarine;
+}
+
 input,
 button {
 	padding: 0.6rem 1rem;
