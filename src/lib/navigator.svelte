@@ -3,13 +3,13 @@
 
 	const pages = [
 		'/',
-		'/motion/tweened',
-		'/motion/spring',
 		'/transitions/component',
 		'/transitions/stagger',
 		'/transitions/examples',
 		'/transitions/custom/css',
 		'/transitions/custom/js',
+		'/motion/tweened',
+		'/motion/spring',
 		'/animate/flip',
 		'/flip/svelte',
 		'/flip/gsap'
