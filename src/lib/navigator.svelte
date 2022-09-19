@@ -13,7 +13,8 @@
 		'/animate/flip',
 		'/flip/svelte',
 		'/flip/gsap',
-		'/transitions/page/first'
+		'/transitions/page',
+		'/accessibility'
 	]
 	let currentPage = 0
 
