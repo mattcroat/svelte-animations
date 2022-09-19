@@ -36,7 +36,7 @@
 	</svg>
 </button>
 
-<style>
+<style lang="scss">
 	button {
 		position: absolute;
 		bottom: 4%;

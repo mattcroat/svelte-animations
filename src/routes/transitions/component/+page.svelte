@@ -33,7 +33,7 @@
 	</div>
 </Animate>
 
-<style>
+<style lang="scss">
 	.lines {
 		max-width: 800px;
 		font-size: 3rem;

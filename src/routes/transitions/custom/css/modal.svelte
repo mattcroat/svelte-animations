@@ -42,7 +42,7 @@
 	<slot />
 </div>
 
-<style>
+<style lang="scss">
 	.modal-background {
 		width: 100%;
 		height: 100%;

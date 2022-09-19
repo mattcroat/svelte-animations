@@ -58,7 +58,7 @@
 	</div>
 </Animate>
 
-<style>
+<style lang="scss">
 	.transitions {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);

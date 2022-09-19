@@ -19,7 +19,7 @@
 	</Modal>
 {/if}
 
-<style>
+<style lang="scss">
 	img {
 		width: 100%;
 		height: 100%;
