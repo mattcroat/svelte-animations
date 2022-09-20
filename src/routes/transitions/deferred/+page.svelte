@@ -6,7 +6,7 @@
 	const [send, receive] = crossfade({
 		duration: 600,
 
-		// default when you remove an emoji
+		// when you remove an element
 		fallback(node) {
 			const style = getComputedStyle(node)
 			const transform =
@@ -16,8 +16,8 @@
 				duration: 600,
 				easing: quintOut,
 				css: (time) => `
-					transform: ${transform} scale(${time});
 					opacity: ${time}
+					transform: ${transform} scale(${time});
 				`
 			}
 		}
@@ -40,9 +40,9 @@
 	{#if container === 1}
 		{#each emojis as emoji (emoji)}
 			<div
-				class="emoji"
 				in:receive={{ key: emoji }}
 				out:send={{ key: emoji }}
+				class="emoji"
 			>
 				{emoji}
 			</div>

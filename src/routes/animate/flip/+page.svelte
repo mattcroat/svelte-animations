@@ -46,11 +46,11 @@
 	{#if container === 1}
 		{#each emojis as emoji (emoji)}
 			<div
-				class="emoji"
-				on:click={() => remove(emoji)}
 				animate:flip
 				in:receive={{ key: emoji }}
 				out:send={{ key: emoji }}
+				on:click={() => remove(emoji)}
+				class="emoji"
 			>
 				{emoji}
 			</div>

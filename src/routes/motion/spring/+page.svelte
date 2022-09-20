@@ -1,27 +1,36 @@
 <script lang="ts">
 	import { spring } from 'svelte/motion'
+	import type { Action } from 'svelte/action'
+
 	import Animate from '$lib/animate.svelte'
 
-	function scaleRotate(el: HTMLElement, params: any = {}) {
+	type SpringInParams = {
+		scale: number
+		rotate: number
+	}
+
+	const springIn: Action<HTMLElement, SpringInParams> = (
+		node,
+		params
+	) => {
+		if (!params) return
+
+		const { scale, rotate } = params
 		const value = { rotate: 0, scale: 1 }
 		const options = { stiffness: 0.1, damping: 0.6 }
 
+		// use spring store
 		let transition = spring(value, options)
 
+		// subscribe to store
 		const unsubscribe = transition.subscribe(
 			({ rotate, scale }) => {
-				el.style.transform = `scale(${scale}) rotate(${rotate}deg)`
+				node.style.transform = `scale(${scale}) rotate(${rotate}deg)`
 			}
 		)
 
-		transition.update((state) => ({
-			scale: params.scale,
-			rotate: params.rotate
-		}))
-
-		setTimeout(() => {
-			transition.set({ scale: 1, rotate: 0 })
-		}, 1000)
+		// store update starts animation
+		transition.update((state) => ({ scale, rotate }))
 
 		return {
 			destroy: () => unsubscribe()
@@ -32,7 +41,7 @@
 <Animate>
 	<div
 		class="box"
-		use:scaleRotate={{ rotate: 90, scale: 2 }}
+		use:springIn={{ scale: 2, rotate: 90 }}
 	/>
 </Animate>
 

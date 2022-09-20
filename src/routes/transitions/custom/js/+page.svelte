@@ -1,6 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
 	import Animate from '$lib/animate.svelte'
+	import type { TransitionConfig } from 'svelte/transition'
+
+	type TypewriterParams = { speed?: number }
+	type Typewriter = (
+		node: Element,
+		params?: TypewriterParams
+	) => TransitionConfig
 
 	let audio: HTMLAudioElement
 
@@ -10,16 +17,16 @@
 		audio.loop = true
 	})
 
-	function typewriter(
-		node: HTMLElement,
+	const typewriter: Typewriter = (
+		node,
 		{ speed = 1 } = {}
-	) {
-		const text = node.textContent!
+	) => {
+		const text = node.textContent ?? ''
 		const duration = text.length / (speed * 0.01)
 
 		return {
 			duration,
-			tick: (t: number) => {
+			tick: (t) => {
 				const i = Math.trunc(text.length * t)
 				node.textContent = text.slice(0, i)
 			}

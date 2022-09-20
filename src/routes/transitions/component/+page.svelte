@@ -16,13 +16,13 @@
 
 <Animate>
 	<div class="lines">
-		{#each lines as line, index}
+		{#each lines as line, i}
 			<div class="overflow">
 				<span
 					class="line"
 					in:fly={{
 						y: 100,
-						delay: 300 * index,
+						delay: 300 * i,
 						easing: backOut
 					}}
 				>
@@ -39,18 +39,18 @@
 		font-size: 3rem;
 		font-weight: 900;
 		text-align: center;
-	}
 
-	.overflow {
-		display: inline-block;
-		overflow: hidden;
-		vertical-align: bottom;
-	}
+		.overflow {
+			display: inline-block;
+			overflow: hidden;
+			vertical-align: bottom;
+		}
 
-	.line {
-		display: inline-block;
-		margin: 0.2rem;
-		text-transform: uppercase;
-		text-shadow: 2px 0 10px hsl(0 0% 0% / 20%);
+		.line {
+			display: inline-block;
+			margin: 0.2rem;
+			text-transform: uppercase;
+			text-shadow: 2px 0 10px hsl(0 0% 0% / 20%);
+		}
 	}
 </style>

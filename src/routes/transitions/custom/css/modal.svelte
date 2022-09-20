@@ -1,14 +1,24 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte'
 	import { quintOut } from 'svelte/easing'
+	import type { TransitionConfig } from 'svelte/transition'
 
-	function modal(node: HTMLElement, params: any) {
+	type ModalParams = { duration?: number }
+	type ModalType = (
+		node: Element,
+		params?: ModalParams
+	) => TransitionConfig
+
+	const modal: ModalType = (
+		node,
+		{ duration = 300 } = {}
+	) => {
 		const transform = getComputedStyle(node).transform
 
 		return {
-			duration: params.duration ?? 1000,
+			duration,
 			easing: quintOut,
-			css: (t: number, u: number) => {
+			css: (t, u) => {
 				return `transform:
 					${transform}
 					scale(${t})
