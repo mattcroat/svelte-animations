@@ -8,12 +8,15 @@
 		'/transitions/examples',
 		'/transitions/custom/css',
 		'/transitions/custom/js',
+		'/transitions/deferred',
+		// '/transitions/local',
+		// '/transition/key',
+		'/transitions/page',
 		'/motion/tweened',
 		'/motion/spring',
 		'/animate/flip',
 		'/flip/svelte',
 		'/flip/gsap',
-		'/transitions/page',
 		'/accessibility'
 	]
 	let currentPage = 0
