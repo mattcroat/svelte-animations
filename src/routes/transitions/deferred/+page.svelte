@@ -34,15 +34,21 @@
 	function remove(id: string) {
 		emojis = emojis.filter((emoji) => emoji !== id)
 	}
+
+	function reset() {
+		emojis = ['🎩', '🪄', '🐇', '🌹']
+		container = 1
+	}
 </script>
 
 <div class="container">
 	{#if container === 1}
 		{#each emojis as emoji (emoji)}
 			<div
+				class="emoji"
 				in:receive={{ key: emoji }}
 				out:send={{ key: emoji }}
-				class="emoji"
+				on:click={() => remove(emoji)}
 			>
 				{emoji}
 			</div>
@@ -57,6 +63,7 @@
 				class="emoji"
 				in:receive={{ key: emoji }}
 				out:send={{ key: emoji }}
+				on:click={() => remove(emoji)}
 			>
 				{emoji}
 			</div>
@@ -66,11 +73,11 @@
 
 <div class="actions">
 	<button on:click={randomize}>🎲</button>
+	<button on:click={reset}>♻️</button>
 </div>
 
 <style lang="scss">
 	.container {
-		min-width: 800px;
 		min-height: 200px;
 		display: flex;
 		gap: 1rem;

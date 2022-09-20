@@ -7,7 +7,7 @@
 	const [send, receive] = crossfade({
 		duration: 600,
 
-		// default when you remove an emoji
+		// when you remove an element
 		fallback(node) {
 			const style = getComputedStyle(node)
 			const transform =
@@ -46,11 +46,11 @@
 	{#if container === 1}
 		{#each emojis as emoji (emoji)}
 			<div
+				class="emoji"
 				animate:flip
 				in:receive={{ key: emoji }}
 				out:send={{ key: emoji }}
 				on:click={() => remove(emoji)}
-				class="emoji"
 			>
 				{emoji}
 			</div>
@@ -63,10 +63,10 @@
 		{#each emojis as emoji (emoji)}
 			<div
 				class="emoji"
-				on:click={() => remove(emoji)}
 				animate:flip
 				in:receive={{ key: emoji }}
 				out:send={{ key: emoji }}
+				on:click={() => remove(emoji)}
 			>
 				{emoji}
 			</div>
@@ -81,7 +81,6 @@
 
 <style lang="scss">
 	.container {
-		min-width: 800px;
 		min-height: 200px;
 		display: flex;
 		gap: 1rem;
