@@ -6,8 +6,8 @@
 		'/transitions/component',
 		'/transitions/stagger',
 		'/transitions/examples',
-		// '/transitions/local',
-		// '/transitions/key',
+		'/transitions/local',
+		'/transitions/key',
 		'/transitions/page',
 		'/transitions/custom/css',
 		'/transitions/custom/js',
@@ -17,6 +17,7 @@
 		'/motion/spring',
 		'/flip/svelte',
 		'/flip/gsap',
+		'/actions',
 		'/accessibility'
 	]
 	let currentPage = 0
