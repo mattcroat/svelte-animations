@@ -8,11 +8,9 @@
 		scale: number
 		rotate: number
 	}
+	type SpringInAction = Action<HTMLElement, SpringInParams>
 
-	const springIn: Action<HTMLElement, SpringInParams> = (
-		node,
-		params
-	) => {
+	const springIn: SpringInAction = (node, params) => {
 		if (!params) return
 
 		const { scale, rotate } = params
