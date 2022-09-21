@@ -15,6 +15,11 @@
 		audio = new Audio('/audio/typewriter.mp3')
 		audio.volume = 0.4
 		audio.loop = true
+
+		return () => {
+			audio.pause()
+			audio.currentTime = 0
+		}
 	})
 
 	const typewriter: Typewriter = (
