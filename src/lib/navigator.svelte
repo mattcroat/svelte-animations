@@ -4,7 +4,8 @@
 	const pages = [
 		'/',
 		'/graphics',
-		'/transitions/component',
+		'/transitions/fade',
+		'/transitions/fly',
 		'/transitions/stagger',
 		'/transitions/examples',
 		'/transitions/local',
