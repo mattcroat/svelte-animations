@@ -143,13 +143,13 @@
 		border-radius: 1rem;
 		user-select: none;
 
-		--first: calc(
+		--previous: calc(
 			var(--angle) / var(--cards) * (var(--index) + 1)
 		);
-		--second: calc(
+		--next: calc(
 			var(--angle) / 2 + (var(--angle) / var(--cards)) / 2
 		);
-		--rotation: calc(var(--first) - var(--second));
+		--rotation: calc(var(--previous) - var(--next));
 
 		transform: rotate(calc(var(--rotation) * 1deg));
 		transform-origin: bottom center;
