@@ -3,6 +3,7 @@
 
 	const pages = [
 		'/',
+		'/graphics',
 		'/transitions/component',
 		'/transitions/stagger',
 		'/transitions/examples',
