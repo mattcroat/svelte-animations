@@ -1,4 +1,4 @@
-<h1>Animations With Svelte 🎩🪄🐇🌹</h1>
+<h1>Animation With Svelte 🎩🪄🐇🌹</h1>
 
 <div class="navigation">
 	Use <kbd>Left</kbd> and <kbd>Right</kbd>
