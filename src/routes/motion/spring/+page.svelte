@@ -28,7 +28,7 @@
 		)
 
 		// store update starts animation
-		transition.update((state) => ({ scale, rotate }))
+		transition.set({ scale, rotate })
 
 		return {
 			destroy: () => unsubscribe()

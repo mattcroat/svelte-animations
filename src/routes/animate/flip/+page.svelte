@@ -6,7 +6,6 @@
 
 	const [send, receive] = crossfade({
 		duration: 600,
-
 		// when you remove an element
 		fallback(node) {
 			const style = getComputedStyle(node)
