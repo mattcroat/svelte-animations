@@ -17,7 +17,7 @@
 		const value = { rotate: 0, scale: 1 }
 		const options = { stiffness: 0.1, damping: 0.6 }
 
-		// use spring store
+		// create spring store
 		let transition = spring(value, options)
 
 		// subscribe to store

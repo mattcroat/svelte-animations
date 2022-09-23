@@ -15,9 +15,9 @@
 			return {
 				duration: 600,
 				easing: quintOut,
-				css: (time) => `
-					opacity: ${time}
-					transform: ${transform} scale(${time});
+				css: (t) => `
+					opacity: ${t}
+					transform: ${transform} scale(${t});
 				`
 			}
 		}
